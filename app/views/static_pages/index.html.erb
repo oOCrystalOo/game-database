@@ -1,1 +1,14 @@
-
+<div>
+    <h1>Top Rated Games</h1>
+    <ul class="row games_list">
+    <% @data.each do |game| %>
+      <li class="col-5 col-md-3 col-lg-2 game_card">
+        <% game.each do |attr_name, attr_value| %>
+          <label><%= attr_name %>:</label>
+          <%= attr_value %>
+          <br />
+        <% end %>
+      </li>
+    <% end %>
+    </ul>
+</div>

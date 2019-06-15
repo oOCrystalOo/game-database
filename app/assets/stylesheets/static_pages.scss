@@ -1,3 +1,11 @@
-// Place all the styles related to the static_pages controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "bootstrap";
+
+ul.games_list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.games_list li.game_card {
+    border: 1px solid #ccc;
+}

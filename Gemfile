@@ -61,6 +61,11 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'figaro'
 
+gem 'bootstrap'
+gem 'sprockets-rails'
+gem 'jquery-rails'
+gem 'popper_js'
+
 group :development, :test do 
   gem 'rspec-rails', '~> 3.5'
 end
