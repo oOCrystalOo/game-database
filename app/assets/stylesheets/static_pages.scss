@@ -8,4 +8,25 @@ ul.games_list {
 
 ul.games_list li.game_card {
     border: 1px solid #ccc;
+    word-break: break-word;
+    text-align: center;
+}
+
+a.article_btn {
+    width: 100%;
+}
+
+img.img-fluid {
+    display: block;
+    margin: auto;
+}
+
+div.modal div.modal-body div {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+div.release_card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }

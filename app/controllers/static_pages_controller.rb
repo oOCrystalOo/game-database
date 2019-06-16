@@ -2,16 +2,18 @@ class StaticPagesController < ApplicationController
   def index
     require 'net/http'
     offset = 0
+    # the number of games to get
+    num = 10
     game_ids = Array.new
     
-    # while the number of game ids in the array is less than 10, get more top reviews
-    while game_ids.length < 10 do
+    # while the number of game ids in the array is less than #{num}, get more top reviews
+    while game_ids.length < num do
       uri = URI('http://www.gamespot.com/api/reviews/')
       params = {
         :api_key  => ENV['GAMESPOT_API_KEY'],
         :format   => 'json',
         :sort     => 'score:desc',
-        :limit    => 15,
+        :limit    => num + 5,
         :offset   => offset
       }
       uri.query = URI.encode_www_form(params)
@@ -28,38 +30,68 @@ class StaticPagesController < ApplicationController
         game_ids.push(game_id)
       end
       
-      # remove duplicates and get first 10
-      game_ids = game_ids.uniq[0, 10]
+      # remove duplicates and get first #{num}
+      game_ids = game_ids.uniq[0, num]
       
       # increase the offset if needed, and run the loop again with the new offset
-      if game_ids.length < 10
-        offset = offset + 15
+      if game_ids.length < num
+        offset = offset + num + 5
       end
     end
     
-    # get game data from the 10 ids
+    # get game data from the #{num} ids
     @data = Array.new
-    if game_ids.length == 10
+    if game_ids.length == num
       game_ids.each do |id|
-        uri = URI('http://www.gamespot.com/api/games/')
+        game_data = get_game_data(id)
+        @data.push(game_data)
+      end
+    end
+  end
+  
+  private
+  def get_game_data (id) 
+    if id
+      uri = URI('http://www.gamespot.com/api/games/')
         params = {
           :api_key  => ENV['GAMESPOT_API_KEY'],
           :format   => 'json',
-          :filter   => id
+          :filter   => "id:#{id}"
         }
         uri.query = URI.encode_www_form(params)
-
+        puts uri.query.inspect
         response = Net::HTTP.get_response(uri)
         if response.code == "301"
           response = Net::HTTP.get_response(URI.parse(response.header['location']))
         end
-        game_data = JSON.parse(response.body)['results']
+        game_data = JSON.parse(response.body)['results'][0]
         
-        @data.push(game_data)
-      end
+        # get all resources with api
+        game_data['reviews'] = get_api('reviews', id)
+        game_data['videos'] = get_api('videos', id)
+        game_data['articles'] = get_api('articles', id)
+        game_data['releases'] = get_api('releases', id)
+        
+        return game_data
     end
-    
-    puts @data.inspect
+  end
+  
+  def get_api(type, id)
+    if id
+      uri = URI("http://www.gamespot.com/api/#{type}/")
+        params = {
+          :api_key  => ENV['GAMESPOT_API_KEY'],
+          :format   => 'json',
+          :filter   => "association:5000-#{id}",
+          :limit    => 5
+        }
+        uri.query = URI.encode_www_form(params)
+        response = Net::HTTP.get_response(uri)
+        if response.code == "301"
+          response = Net::HTTP.get_response(URI.parse(response.header['location']))
+        end
+        return JSON.parse(response.body)['results']
+    end
   end
  
 end
