@@ -1,5 +1,9 @@
 class StaticPagesController < ApplicationController
   def index
+    
+  end
+  
+  def games
     require 'net/http'
     offset = 0
     # the number of games to get
@@ -43,14 +47,21 @@ class StaticPagesController < ApplicationController
     @data = Array.new
     if game_ids.length == num
       game_ids.each do |id|
-        game_data = get_game_data(id)
+        game_data = get_game_data(id, false)
         @data.push(game_data)
       end
     end
   end
   
+  def game
+    id = params[:id]
+    if id
+      @game = get_game_data(id, true)
+    end
+  end
+  
   private
-  def get_game_data (id) 
+  def get_game_data (id, get_extra_info) 
     if id
       uri = URI('http://www.gamespot.com/api/games/')
         params = {
@@ -66,11 +77,13 @@ class StaticPagesController < ApplicationController
         end
         game_data = JSON.parse(response.body)['results'][0]
         
-        # get all resources with api
-        game_data['reviews'] = get_api('reviews', id)
-        game_data['videos'] = get_api('videos', id)
-        game_data['articles'] = get_api('articles', id)
-        game_data['releases'] = get_api('releases', id)
+        if get_extra_info
+          # get all resources with api
+          game_data['reviews'] = get_api('reviews', id)
+          game_data['videos'] = get_api('videos', id)
+          game_data['articles'] = get_api('articles', id)
+          game_data['releases'] = get_api('releases', id)
+        end
         
         return game_data
     end

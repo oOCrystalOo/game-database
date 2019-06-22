@@ -8,8 +8,16 @@
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
   </head>
-
+  
   <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <%= link_to 'Home', root_path, class: 'navbar-brand' %>
+      <form class="form-inline my-2 my-lg-0 text-right">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </nav>
+      
     <%= yield %>
   </body>
 </html>

@@ -65,6 +65,7 @@ gem 'bootstrap'
 gem 'sprockets-rails'
 gem 'jquery-rails'
 gem 'popper_js'
+gem 'font-awesome-sass'
 
 group :development, :test do 
   gem 'rspec-rails', '~> 3.5'

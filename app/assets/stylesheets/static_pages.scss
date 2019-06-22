@@ -1,5 +1,9 @@
 @import "bootstrap";
 
+img {
+    max-width: 100%;
+}
+
 ul.games_list {
     list-style-type: none;
     margin: 0;
@@ -10,6 +14,11 @@ ul.games_list li.game_card {
     border: 1px solid #ccc;
     word-break: break-word;
     text-align: center;
+    -webkit-box-shadow: 8px 10px 10px 0px rgba(0,0,0,0.4);
+    -moz-box-shadow: 8px 10px 10px 0px rgba(0,0,0,0.4);
+    box-shadow: 8px 10px 10px 0px rgba(0,0,0,0.4);
+    margin: 1%;
+    cursor: pointer;
 }
 
 a.article_btn {
@@ -21,12 +30,15 @@ img.img-fluid {
     margin: auto;
 }
 
-div.modal div.modal-body div {
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
 div.release_card {
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+div.game_data {
+    text-align: center;
+}
+
+video.game_video {
+    max-height: 50vh;
 }
