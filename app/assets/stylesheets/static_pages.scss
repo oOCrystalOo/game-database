@@ -1,4 +1,6 @@
 @import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
 
 img {
     max-width: 100%;
@@ -41,4 +43,23 @@ div.game_data {
 
 video.game_video {
     max-height: 50vh;
+}
+
+.desktop_only {
+    display: none;
+}
+
+.row {
+    margin: 0;
+}
+
+.italic {
+    color: grey;
+    font-style: italic;
+}
+
+@media only screen and (min-width: 480px) {
+    .desktop_only {
+        display: initial;
+    }
 }

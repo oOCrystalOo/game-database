@@ -1,0 +1,70 @@
+<div>
+  <h1 class="text-center">Search Games</h1>
+  <div class="row form-group">
+      <h6 class="col-4">Search a Genre</h6>
+      <select class="col-4 form-control" id="genres_select">
+        <option value="" class="italic">Select One</option>
+        <% @genres_data.each do |genre| %>
+          <option value="<%= genre['name'] %>"><%= genre['name'] %></option>
+        <% end %>
+      </select>
+  </div>
+  <div class="row form-group">
+      <h6 class="col-4">Search a Platform</h6>
+      <select class="col-4 form-control" id="platforms_select">
+        <option value="" class="italic">Select One</option>
+        <% @platforms_data.each do |platform| %>
+          <option value="<%= platform['name'] %>"><%= platform['name'] %></option>
+        <% end %>
+      </select>
+  </div>
+  <div class="row form-group">
+      <h6 class="col-4">Search Themes</h6>
+      <select class="col-4 form-control" id="themes_select">
+        <option value="" class="italic">Select One</option>
+        <% @themes_data.each do |theme| %>
+          <option value="<%= theme['name'] %>"><%= theme['name'] %></option>
+        <% end %>
+      </select>
+  </div>
+  <div class="row form-group">
+      <button type="button" id="searchButton">
+          <span>Search</span>
+      </button>
+  </div>
+</div>
+
+<div class="search_results"></div>
+
+<script>
+    jQuery(document).ready(function($){
+        function search_games(genre, platform, theme) {
+          $.ajax({
+            url: <%= search_games_path %>,
+            type: "GET",
+            data: {
+              genre: genre,
+              platform: platform,
+              theme: theme
+            },
+            success: function (response){
+              
+            },
+            error: function (error){
+              
+            }
+          });
+        }
+        
+        $('button#searchButton').on('click', function(){
+            var genre = $('#genres_select').val();
+            var platform = $('#platforms_select').val();
+            var theme = $('#themes_select').val();
+            if (genre.length > 0 || platform.length > 0 || theme.length > 0) {
+              search_games(genre, platform, theme);
+            } else {
+              alert('Please select at least 1 filter to search.');
+            }
+        });
+    });
+</script>

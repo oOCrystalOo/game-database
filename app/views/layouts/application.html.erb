@@ -12,12 +12,59 @@
   <body>
     <nav class="navbar navbar-dark bg-dark">
       <%= link_to 'Home', root_path, class: 'navbar-brand' %>
-      <form class="form-inline my-2 my-lg-0 text-right">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
+      
+        
+      <%= link_to search_path, class: 'btn btn-secondary text-right' do %>
+        <i class="fas fa-search"></i>
+        <span class="desktop_only"> Search</span>
+      <% end %>
+        
+      <%#*<button type="button" class="btn btn-secondary text-right" data-toggle="modal" data-target="#searchModal">%>
+        <%#*<i class="fas fa-search"></i>%>
+        <%#*<span class="desktop_only"> Search</span>%>
+      <%#*</button>%>
     </nav>
       
     <%= yield %>
+      
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Search</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                <label>Select a genre: </label>
+                <select id="genre">
+                    <option value="">Select One</option>
+                    <option value="action">Action</option>
+                    <option value="adventure">Adventure</option>
+                    <option value="miscellaneous">Miscellaneous</option>
+                    <option value="puzzle">Puzzle</option>
+                    <option value="racing">Racing</option>
+                    <option value="role-playing">Role-Playing</option>
+                    <option value="simulation">Simulation</option>
+                    <option value="sports">Sports</option>
+                    <option value="strategy">Strategy</option>
+                </select>
+              </div>
+              <div class="row">
+                <label>Select a theme: </label>
+                <select id="theme">
+                    <option value="">Select One</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Historic">Historic</option>
+                    <option value="Modern">Modern</option>
+                    <option value="Sci-Fi">Sci-Fi</option>
+                </select>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
