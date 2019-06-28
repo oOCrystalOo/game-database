@@ -6,6 +6,16 @@ img {
     max-width: 100%;
 }
 
+a,
+a:hover {
+    color: #444;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #888;
+}
+
 ul.games_list {
     list-style-type: none;
     margin: 0;
@@ -30,6 +40,7 @@ a.article_btn {
 img.img-fluid {
     display: block;
     margin: auto;
+    max-height: 50vh;
 }
 
 div.release_card {

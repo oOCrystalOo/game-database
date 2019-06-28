@@ -1,10 +1,10 @@
 <div>
-    <h1>Top Rated Games</h1>
+    <h1 class="text-center">Current Popular Games</h1>
     <ul class="row games_list">
     <% @data.each do |game| %>
       <li class="col-5 col-md-3 col-lg-2 game_card" data-toggle="modal" data-target="#<%= game['id'] %>">
           <%= link_to game_path(game['id']) do %>
-            <%= image_tag game['image']['square_small'], class: 'img-fluid' %>
+            <%= image_tag game['cover_url'], class: 'img-fluid' %>
             <h3><%= game['name'] %></h3>
           <% end %>
       </li>
