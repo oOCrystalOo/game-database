@@ -6,6 +6,14 @@
     <div>
       <%= image_tag @game['cover_url'], class: 'img-fluid' %>
     </div>
-    
+    <div>
+        <h3>Genres: </h3>
+        <% @game['genres_names'].each_with_index do |genre, index| %>
+          <%= genre['name'] %>
+          <% if (index + 1) != @game['genres_names'].length %>
+            ,
+          <% end %>
+        <% end %>
+    </div>
   </div>
 </div>

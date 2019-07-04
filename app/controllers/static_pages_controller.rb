@@ -19,7 +19,7 @@ class StaticPagesController < ApplicationController
       return not_found()
     end
     
-    @game['genres_names'] = get_genres(@game['genres'])
+    @game['genres_names'] = JSON.parse(get_genres(@game['genres']))
     
     cover_url = get_cover(@game['cover'])
     @game['cover_url'] = cover_url
