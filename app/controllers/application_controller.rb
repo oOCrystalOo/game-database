@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  # before_action :get_platforms
+  # before_action :get_all_platforms
   
   def call_api(endpoint, body)
     require 'net/https'
@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
     return response.body
   end
   
-  def get_platforms
+  def get_all_platforms
     @platforms = call_api('platforms', "fields *;")
   end
 end
