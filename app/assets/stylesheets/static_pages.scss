@@ -80,6 +80,16 @@ div.section h3 button {
     width: 100%;
 }
 
+nav form .form-control {
+    width: 80%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+nav form button {
+    width: 18%;
+}
+
 @media only screen and (min-width: 768px) {
     .desktop_only {
         display: initial;

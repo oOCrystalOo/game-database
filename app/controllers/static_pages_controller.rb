@@ -40,11 +40,7 @@ class StaticPagesController < ApplicationController
       game['cover_url'] = get_images_by_id(game['cover'], 'covers')[0]['url']
     end
   end
-  
-  def not_found
-    render plain: 'Game not found', status: :not_found
-  end
-  
+    
   private
   def get_names_from_ids (array, endpoint)
     if !array.kind_of?(Array)
@@ -99,20 +95,5 @@ class StaticPagesController < ApplicationController
     end
     
     return ratings
-  end
-  
-  def get_images_by_id(array, endpoint)
-    if !array.kind_of?(Array)
-      array = [ array ]
-    end
-    
-    ids = array.join(',')
-    request = "fields url; where id = (#{ids});"
-    response = JSON.parse(call_api(endpoint, request))
-    response.each do |image_hash| 
-      # Replace t_thumb with t_1080p for high quality image
-      image_hash['url'].sub! 't_thumb', 't_1080p'
-    end
-    return response
   end
 end
