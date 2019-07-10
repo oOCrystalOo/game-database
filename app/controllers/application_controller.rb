@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  before_action :get_all_platforms
   
   def call_api(endpoint, body)
     require 'net/https'
@@ -12,10 +11,6 @@ class ApplicationController < ActionController::Base
       response = Net::HTTP.get_response(URI.parse(response.header['location']))
     end
     return response.body
-  end
-  
-  def get_all_platforms
-    @platforms = JSON.parse(call_api('platforms', "fields *;"))
   end
   
   def not_found
@@ -52,7 +47,7 @@ class ApplicationController < ActionController::Base
       if !image_hash['url'].nil?
         image_hash['url'].sub! 't_thumb', 't_1080p'
       else
-        puts image_hash.inspect
+        image_hash['url'] = ActionController::Base.helpers.image_path('image_placeholder.png')
       end
     end
     return response

@@ -19,15 +19,35 @@ class StaticPagesController < ApplicationController
       return not_found()
     end
     
-    @game['genres_names'] = get_names_from_ids(@game['genres'], 'genres')
-    @game['game_modes_values'] = get_names_from_ids(@game['game_modes'], 'game_modes')
-    @game['platforms_names'] = get_names_from_ids(@game['platforms'], 'platforms')
-    @game['themes_names'] = get_names_from_ids(@game['themes'], 'themes')
-    @game['age_rating_value'] = get_age_rating(@game['age_ratings'])
-    @game['cover_url'] = get_images_by_id(@game['cover'], 'covers')[0]['url']
-    @game['screenshots_urls'] = get_images_by_id(@game['screenshots'], 'screenshots')
-    @game['game_videos_urls'] = get_game_videos(@game['videos'])
-    
+    if !@game['genres'].nil?
+      @game['genres_names'] = get_names_from_ids(@game['genres'], 'genres')
+    end
+    if !@game['game_modes'].nil?
+      @game['game_modes_values'] = get_names_from_ids(@game['game_modes'], 'game_modes')
+    end
+    if !@game['platforms'].nil?
+      @game['platforms_names'] = get_names_from_ids(@game['platforms'], 'platforms')
+    end
+    if !@game['themes'].nil?
+      @game['themes_names'] = get_names_from_ids(@game['themes'], 'themes')
+    end
+    if !@game['age_ratings'].nil?
+      @game['age_rating_value'] = get_age_rating(@game['age_ratings'])
+    end
+    if !@game['cover'].nil?
+      @game['cover_url'] = get_images_by_id(@game['cover'], 'covers')[0]['url']
+    else
+      @game['cover_url'] = ActionController::Base.helpers.image_path('image_placeholder.png')
+    end
+    if !@game['screenshots'].nil?
+      @game['screenshots_urls'] = get_images_by_id(@game['screenshots'], 'screenshots')
+    end
+    if !@game['videos'].nil?
+      @game['game_videos_urls'] = get_game_videos(@game['videos'])
+    end
+    if !@game['version_parent'].nil?
+      @game['version_parent_info'] = get_names_from_ids(@game['version_parent'], 'games')[0]
+    end
   end
   
   def get_top_10

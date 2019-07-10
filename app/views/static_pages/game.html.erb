@@ -9,53 +9,83 @@
       <div class="col-12 col-md-6">
           <div class="section">
               <h3>Summary</h3>
-              <p><%= @game['summary'] %></p>
+              <% if !@game['summary'].nil? %>
+                <p><%= @game['summary'] %></p>
+              <% else %>
+                <p>No information available</p>
+              <% end %>
           </div>
           <div class="section">
             <h3>Genres</h3>
-            <% @game['genres_names'].each_with_index do |genre, index| %>
-              <%= genre['name'] %>
-              <% if (index + 1) != @game['genres_names'].length %>
-              ,
+            <% if !@game['genres_names'].nil? %>
+              <% @game['genres_names'].each_with_index do |genre, index| %>
+                <%= genre['name'] %>
+                <% if (index + 1) != @game['genres_names'].length %>
+                ,
+                <% end %>
               <% end %>
+            <% else %>
+              <p>No information available</p>
             <% end %>
           </div>
           <div class="section">
               <h3>Themes</h3>
-              <% @game['themes_names'].each_with_index do |theme, index| %>
-                <%= theme['name'] %>
-                <% if (index + 1) != @game['themes_names'].length %>
-                ,
+              <% if !@game['themes_names'].nil? %>
+                <% @game['themes_names'].each_with_index do |theme, index| %>
+                  <%= theme['name'] %>
+                  <% if (index + 1) != @game['themes_names'].length %>
+                  ,
+                  <% end %>
                 <% end %>
+              <% else %>
+                <p>No information available</p>
               <% end %>
           </div>
           <div class="section">
               <h3>Ratings</h3>
-              <% @game['age_rating_value'].each_with_index do |rating_hash, index| %>
-                <%= rating_hash['category_name'] %> - <%= rating_hash['rating_name'] %>
-                <% if (index + 1) != @game['age_rating_value'].length %>
-                ,
+              <% if !@game['age_rating_value'].nil? %>
+                <% @game['age_rating_value'].each_with_index do |rating_hash, index| %>
+                  <%= rating_hash['category_name'] %> - <%= rating_hash['rating_name'] %>
+                  <% if (index + 1) != @game['age_rating_value'].length %>
+                  ,
+                  <% end %>
                 <% end %>
+              <% else %>
+                <p>No information available</p>
               <% end %>
           </div>
           <div class="section">
               <h3>Platforms</h3>
-              <% @game['platforms_names'].each_with_index do |platform, index| %>
-                <%= platform['name'] %>
-                <% if (index + 1) != @game['platforms_names'].length %>
-                ,
+              <% if !@game['platforms_names'].nil? %>
+                <% @game['platforms_names'].each_with_index do |platform, index| %>
+                  <%= platform['name'] %>
+                  <% if (index + 1) != @game['platforms_names'].length %>
+                  ,
+                  <% end %>
                 <% end %>
+              <% else %>
+                <p>No information available</p>
               <% end %>
           </div>
           <div class="section">
               <h3>Game Modes</h3>
-              <% @game['game_modes_values'].each_with_index do |game_modes, index| %>
-                <%= game_modes['name'] %>
-                <% if (index + 1) != @game['game_modes_values'].length %>
-                ,
+              <% if !@game['game_modes_values'].nil? %>
+                <% @game['game_modes_values'].each_with_index do |game_modes, index| %>
+                  <%= game_modes['name'] %>
+                  <% if (index + 1) != @game['game_modes_values'].length %>
+                  ,
+                  <% end %>
                 <% end %>
+              <% else %>
+                <p>No information available</p>
               <% end %>
           </div>
+          <% if !@game['version_parent_info'].nil? %>
+          <div class="section">
+              <h3>Version Parent</h3>
+              <%= link_to @game['version_parent_info']['name'], game_path(@game['version_parent_info']['id']) %>
+          </div>
+          <% end %>
           <div class="section">
               <h3>
                   <button class="btn btn-secondary" type="button" data-toggle="collapse" 
@@ -65,8 +95,12 @@
                   </button>
               </h3>
               <div class="collapse row" id="screenshots">
-                <% @game['screenshots_urls'].each do |game_hash| %>
-                  <%= image_tag game_hash['url'], class: 'img-fluid  col-12 col-md-6' %>
+                <% if !@game['screenshots_urls'].nil? %>
+                  <% @game['screenshots_urls'].each do |game_hash| %>
+                    <%= image_tag game_hash['url'], class: 'img-fluid  col-12 col-md-6' %>
+                  <% end %>
+                <% else %>
+                  <p>No information available</p>
                 <% end %>
               </div>
           </div>
@@ -79,10 +113,14 @@
                   </button>
               </h3>
               <div class="collapse" id="videos">
-                <% @game['game_videos_urls'].each do |video_hash| %>
-                  <iframe src="https://www.youtube.com/embed/<%= video_hash['video_id'] %>" frameborder="0" 
-                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                          allowfullscreen></iframe>
+                <% if !@game['game_videos_urls'].nil? %>
+                  <% @game['game_videos_urls'].each do |video_hash| %>
+                    <iframe src="https://www.youtube.com/embed/<%= video_hash['video_id'] %>" frameborder="0" 
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                  <% end %>
+                <% else %>
+                  <p>No information available</p>
                 <% end %>
               </div>
           </div>

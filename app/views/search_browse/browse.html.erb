@@ -1,0 +1,10 @@
+<% if @platforms.nil? %>
+<div class="platforms_container">
+  <% @platforms.each do |platform| %>
+    <input type="checkbox" value="<%= platform['id'] %>"/>
+    <label><%= platform['name'] %></label>
+  <% end %>
+</div>
+<% else %>
+
+<% end %>

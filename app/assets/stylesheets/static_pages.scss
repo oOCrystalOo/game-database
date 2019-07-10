@@ -86,8 +86,9 @@ nav form .form-control {
     vertical-align: top;
 }
 
-nav form button {
+nav form button.search_button {
     width: 18%;
+    color: #fff;
 }
 
 @media only screen and (min-width: 768px) {

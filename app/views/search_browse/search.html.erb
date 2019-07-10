@@ -1,6 +1,6 @@
 <div>
     <h1 class="text-center">Search Results</h1>
-    <p><%= @games.length %> games found</p>
+    <h3 class="text-center"><%= @games.length %> games found</h3>
     <ul class="row games_list">
     <% @games.each do |game| %>
       <li class="col-5 col-md-3 col-lg-2 game_card" data-toggle="modal" data-target="#<%= game['id'] %>">
