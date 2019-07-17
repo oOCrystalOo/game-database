@@ -6,7 +6,6 @@ class SearchBrowseController < ApplicationController
     
     term = params[:search]
     @games = get_games(term, 0)
-    puts "#{@games.length} games found"
   end
   
   def get_games (term, offset)
@@ -33,12 +32,34 @@ class SearchBrowseController < ApplicationController
   end
   
   def browse 
-    puts params.inspect
-    # If it has parameters, get the games searched
+    # Get items to put in sidebar
+    @platforms = get_browse_cat('platforms', 0, true)
+    @genres = get_browse_cat('genres', 0, true)
+  end
+  
+  def browse_games
+    if browse_params.nil? || browse_params.length == 0
+      return not_found()
+    end
     
-    # If not, display all the items to refine search
-    @platforms = JSON.parse(call_api('platforms', "fields *;"))
-    @genres = JSON.parse(call_api('genres', 'fields *;'))
-    @franchises = JSON.parse(call_api('franchises', 'fields *;'))
+    puts browse_params.inspect
+    
+  end
+  
+  def get_browse_cat (type, offset, get_all)
+    browse_results = JSON.parse(call_api(type, "fields *; limit 50; sort name asc; offset #{offset};"))
+    if browse_results.length == 50 && get_all
+      results = get_browse_cat(type, offset + 50, get_all)
+      results.each do |result|
+          browse_results << result
+      end
+      return browse_results
+    end
+    return browse_results
+  end
+  
+  private
+  def browse_params
+    params.require(:browse).permit(:theme, :platform)
   end
 end

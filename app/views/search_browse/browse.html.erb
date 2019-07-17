@@ -1,10 +1,46 @@
-<% if @platforms.nil? %>
-<div class="platforms_container">
-  <% @platforms.each do |platform| %>
-    <input type="checkbox" value="<%= platform['id'] %>"/>
-    <label><%= platform['name'] %></label>
-  <% end %>
+<div class="row">
+  <div class="col-2">
+      <%= form_tag(browse_games_path, method: 'get', class: 'browse_form') do %>
+        <% if !@platforms.nil? %>
+          <button class="btn btn-secondary browse_btn" type="button" data-toggle="collapse" data-target="#platforms" 
+                  aria-expanded="false" aria-controls="platforms">
+            Platforms
+          </button>
+          <div class="collapse" id="platforms">
+            <ul class="browse_list">
+              <% @platforms.each do |platform| %>
+                <li>
+                  <input type="checkbox" value="<%= platform['id'] %>" class="platforms_checkbox"/>
+                  <label><%= platform['name'] %></label>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <% if !@genres.nil? %>
+          <button class="btn btn-secondary browse_btn" type="button" data-toggle="collapse" data-target="#genres" 
+                  aria-expanded="false" aria-controls="genres">
+            Genres
+          </button>
+          <div class="collapse" id="genres">
+            <ul class="browse_list">
+              <% @genres.each do |genre| %>
+                <li>
+                  <input type="checkbox" value="<%= genre['id'] %>" class="genres_checkbox"/>
+                  <label><%= genre['name'] %></label>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      
+        <%= button_tag(type: "submit", class: "btn btn-default browse_button") do %>
+          <i class="fas fa-search"></i>
+          <span>Browse</span>
+        <% end %>
+    <% end %>
+  </div>
+  <div class="col-8 col-md-10">
+      <ul class="row games_list"></ul>
+  </div>
 </div>
-<% else %>
-
-<% end %>
