@@ -2,12 +2,55 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-button.browse_btn {
-    width: 100%;
+div.filters {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 1%;
+    padding: 1%;
+    background: white;
+}
+
+div.filters > div {
+    margin-bottom: 1%;
 }
 
 ul.browse_list {
     list-style-type: none;
     margin: 0;
     padding: 0;
+}
+
+ul.browse_list li {
+    display: inline-flex;
+    width: 15%;
+    text-align: center;
+}
+
+div.filters div.list-group {
+    display: block;
+    text-align: center;
+    background-color: #efefef;
+}
+div.filters div.list-group .list-group-item {
+    width: auto;
+    display: inline-block;
+}
+div.filters div.list-group .list-group-item {
+    border-radius: 0;
+}
+div.filters div.list-group .list-group-item.active {
+    background-color: #7da4ce;
+    border: 0;
+}
+
+a.select_btn {
+    width: 100%;
+    background: #f7f7f8;
+    border: 1px solid #ccc;
+}
+
+a.select_btn:hover,
+a.select_btn.active {
+    background: #e0e0e0;
+    border: 1px solid #888;
 }

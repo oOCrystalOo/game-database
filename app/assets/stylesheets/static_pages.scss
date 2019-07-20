@@ -91,6 +91,21 @@ nav form button.search_button {
     color: #fff;
 }
 
+footer.page-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    padding: 10px;
+}
+
+div.content {
+    margin-bottom: 50px;
+    padding: 0% 1%;
+    background: #f7f7f7;
+    min-height: calc(100vh - 56px - 44px);
+}
+
 @media only screen and (min-width: 768px) {
     .desktop_only {
         display: initial;

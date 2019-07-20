@@ -33,7 +33,11 @@
         <% end %>
       </div>
     </nav>
-      
-    <%= yield %>
+    <div class="content">
+      <%= yield %>
+    </div>
+    <footer class="page-footer navbar-dark bg-dark text-center">
+      <span>Powered by IGDB's API.</span>
+    </footer>
   </body>
 </html>

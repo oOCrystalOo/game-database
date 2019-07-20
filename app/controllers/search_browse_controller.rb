@@ -33,8 +33,9 @@ class SearchBrowseController < ApplicationController
   
   def browse 
     # Get items to put in sidebar
-    @platforms = get_browse_cat('platforms', 0, true)
+    @platforms = get_platforms()
     @genres = get_browse_cat('genres', 0, true)
+    @themes = get_browse_cat('themes', 0, true)
   end
   
   def browse_games
@@ -44,6 +45,14 @@ class SearchBrowseController < ApplicationController
     
     puts browse_params.inspect
     
+  end
+  
+  def get_platforms
+    results = JSON.parse(call_api('platforms', "fields *; limit 50; sort name asc; where generation = 8;"))
+    # Add PC to list
+    results << JSON.parse(call_api('platforms', 'fields *; search "microsoft windows";'))[0]
+    
+    return results
   end
   
   def get_browse_cat (type, offset, get_all)
@@ -60,6 +69,6 @@ class SearchBrowseController < ApplicationController
   
   private
   def browse_params
-    params.require(:browse).permit(:theme, :platform)
+    params.require(:browse).permit(:theme, :platform, :genre)
   end
 end
