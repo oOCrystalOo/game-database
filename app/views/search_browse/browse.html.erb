@@ -10,7 +10,7 @@
         <% if !@platforms.nil? %>
           <% @platforms.each do |platform| %>
             <li class="col-6 col-md-4 col-lg-2">
-              <a href="#" class="btn select_btn" data-platform_id="<%= platform['id'] %>"><%= platform['name'] %></a>
+              <a href="#" class="btn select_btn" data-platform="<%= platform['id'] %>"><%= platform['name'] %></a>
             </li>
           <% end %>
         <% end %>
@@ -32,14 +32,118 @@
         <% if !@themes.nil? %>
           <% @themes.each do |theme| %>
             <li class="col-6 col-md-4 col-lg-2">
-              <a href="#" class="btn select_btn" data-genre="<%= theme['id'] %>"><%= theme['name'] %></a>
+              <a href="#" class="btn select_btn" data-theme="<%= theme['id'] %>"><%= theme['name'] %></a>
             </li>
           <% end %>
         <% end %>
       </ul>
     </div>
   </div>
+    
+  <h4>Selected Filters</h4>
+  <div class="selected_list row"></div>
   <div>
       <ul class="row games_list"></ul>
   </div>
 </div>
+
+<script>
+  $(function() {
+    var offset = 0;
+    var platforms = '';
+    var themes = '';
+    var genres = '';
+    
+    $('a.select_btn').on('click', function(){
+        var name = $(this).text();
+        var id = '';
+        var type = '';
+        
+        if ($(this).attr('data-platform')) {
+          id = $(this).attr('data-platform');
+          type = 'platform';
+        }
+        if ($(this).attr('data-genre')) {
+          id = $(this).attr('data-genre');
+          type = 'genre';
+        }
+        if ($(this).attr('data-theme')) {
+          id = $(this).attr('data-theme');
+          type = 'theme';
+        }
+        
+        build_filter_btn (type, id, name, function(){
+          offset = 0;
+          $('ul.games_list').empty();
+          get_results();
+        });
+    });
+    
+    function build_filter_btn (type, id, name, callback) {
+        var label = $('<span></span>').text(name);
+        var remove_btn = $('<i></i>').addClass('fas fa-times').on('click', function(){
+          offset = 0;
+          $(this).parent().remove();
+          $('ul.games_list').empty();
+          get_results();
+        });
+        var filter_btn = $('<div></div>').append(label, remove_btn).addClass('btn filter_btn col-6 col-md-4 col-lg-2');
+        
+        if (type === 'platform') {
+          $(filter_btn).attr('data-platform', id);
+        } else if (type === 'genre') {
+          $(filter_btn).attr('data-genre', id);
+        } else if (type === 'theme') {
+          $(filter_btn).attr('data-theme', id);
+        }
+        
+        $('div.selected_list').append(filter_btn);
+        
+        if (typeof callback === 'function') {
+          callback();
+        }
+    }
+    
+    function get_results () {
+        var themes_array = new Array();
+        var platforms_array = new Array();
+        var genres_array = new Array();
+
+        // Fetch results once the buttons are built
+        $('div.selected_list div').each(function(){
+          if ($(this).attr('data-theme')) {
+            themes_array.push($(this).attr('data-theme'));
+          } else if ($(this).attr('data-platform')) {
+            platforms_array.push($(this).attr('data-platform'));
+          } else if ($(this).attr('data-genre')) {
+            genres_array.push($(this).attr('data-genre'));
+          }
+        });
+        themes = themes_array.join(',');
+        platforms = platforms_array.join(',');
+        genres = genres_array.join(',');
+          
+        var payload = {
+          theme: themes,
+          platform: platforms,
+          genre: genres,
+          offset: offset
+        }
+        $.get("/browse_games", payload).success(function(data){
+            console.log(data);
+            data.forEach(function(game){
+              build_game_cards(game);
+            });
+        });
+    }
+    
+    function build_game_cards (game) {
+      var image = $('<img />').attr('src', game.cover_url).addClass('img-fluid');
+      var label = $('<h3></h3>').text(game.name);
+      var game_link = $('<a></a>').attr('href', `/game/${game.id}`).append(image, label);
+      var li = $('<li></li>').attr('data-target', game.id).addClass('col-5 col-md-3 col-lg-2 game_card').append(game_link);
+      
+      $('ul.games_list').append(li);
+    }
+});
+</script>

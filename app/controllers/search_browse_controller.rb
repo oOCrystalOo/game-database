@@ -38,13 +38,29 @@ class SearchBrowseController < ApplicationController
     @themes = get_browse_cat('themes', 0, true)
   end
   
-  def browse_games
-    if browse_params.nil? || browse_params.length == 0
+  def browse_games    
+    theme = !params['theme'].nil? && params['theme'].length > 0 ? "themes = (#{params['theme']})" : ""
+    platform = !params['platform'].nil? && params['platform'].length > 0 ? "platforms = (#{params['platform']})" : ""
+    genre = !params['genre'].nil? && params['genre'].length > 0 ? "genres = (#{params['genre']})" : ""
+    offset = params['offset']
+    
+    query = [theme, platform, genre].reject { |c| c.empty? }
+    query_string = query.join(" & ")
+    
+    if query_string.length == 0
       return not_found()
     end
     
-    puts browse_params.inspect
+    results = JSON.parse(call_api('games', "fields *; limit 50; sort ratings desc; where #{query_string}; offset #{offset};"))
+    results.each do |result|
+        if !result['cover'].nil?
+          result['cover_url'] = get_images_by_id(result['cover'], 'covers')[0]['url']
+        else
+          result['cover_url'] = ActionController::Base.helpers.image_path('image_placeholder.png')
+        end
+    end
     
+    render json: results
   end
   
   def get_platforms
@@ -65,10 +81,5 @@ class SearchBrowseController < ApplicationController
       return browse_results
     end
     return browse_results
-  end
-  
-  private
-  def browse_params
-    params.require(:browse).permit(:theme, :platform, :genre)
   end
 end

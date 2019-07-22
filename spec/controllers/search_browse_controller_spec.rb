@@ -14,13 +14,19 @@ RSpec.describe SearchBrowseController, type: :controller do
   end
   
   describe "search_browse#browse action" do
-    it "should retrieve all the items used for browse if no parameters are set" do
+    it "should get all platforms, genres, and themes successfully" do
       get :browse
       expect(response).to have_http_status :success
     end
-    
+  end
+  
+  describe "search_browse#browse_games action" do
+    it "should return game not found if no params are set" do
+      get :browse_games
+      expect(response).to have_http_status :not_found
+    end
     it "should search and retrieve games with the selected qualities" do
-      get :browse, params: { platform: 130 }
+      get :browse_games, params: { platform: 130 }
       expect(response).to have_http_status :success
     end
   end
