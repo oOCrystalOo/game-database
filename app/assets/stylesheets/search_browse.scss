@@ -3,8 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 div.filters {
-    width: 80%;
-    margin: auto;
+    width: 100%;
     margin-bottom: 1%;
     padding: 1%;
     background: white;
@@ -14,15 +13,16 @@ div.filters > div {
     margin-bottom: 1%;
 }
 
-ul.browse_list {
+ul.browse_list,
+ul.selected_list {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-ul.browse_list li {
+ul.browse_list li,
+ul.selected_list li {
     display: inline-flex;
-    width: 15%;
     text-align: center;
 }
 

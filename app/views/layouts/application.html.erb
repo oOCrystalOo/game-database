@@ -36,8 +36,19 @@
     <div class="content">
       <%= yield %>
     </div>
+    <div class="loadingDiv text-center">
+        <i class="fas fa-spinner fa-pulse fa-4x"></i>
+        <h1>Loading... Please wait</h1>
+    </div>
     <footer class="page-footer navbar-dark bg-dark text-center">
       <span>Powered by IGDB's API.</span>
     </footer>
   </body>
+  
+  
+  <script>
+    $(window).bind('beforeunload', function(){
+      $('div.loadingDiv').addClass("active");
+    });
+  </script>
 </html>

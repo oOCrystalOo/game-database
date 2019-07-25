@@ -10,7 +10,13 @@
         <% if !@platforms.nil? %>
           <% @platforms.each do |platform| %>
             <li class="col-6 col-md-4 col-lg-2">
-              <a href="#" class="btn select_btn" data-platform="<%= platform['id'] %>"><%= platform['name'] %></a>
+              <a href="#" class="btn select_btn" data-platform="<%= platform['id'] %>" title="<%= platform['name'] %>">
+                <% if !platform['abbreviation'].nil? %>
+                  <%= platform['abbreviation'] %>
+                <% else %>
+                  <%= platform['name'] %>
+                <% end %>
+              </a>
             </li>
           <% end %>
         <% end %>
@@ -21,7 +27,9 @@
         <% if !@genres.nil? %>
           <% @genres.each do |genre| %>
             <li class="col-6 col-md-4 col-lg-2">
-              <a href="#" class="btn select_btn" data-genre="<%= genre['id'] %>"><%= genre['name'] %></a>
+              <a href="#" class="btn select_btn" data-genre="<%= genre['id'] %>" title="<%= genre['name'] %>">
+                <%= genre['name'] %>
+              </a>
             </li>
           <% end %>
         <% end %>
@@ -32,7 +40,9 @@
         <% if !@themes.nil? %>
           <% @themes.each do |theme| %>
             <li class="col-6 col-md-4 col-lg-2">
-              <a href="#" class="btn select_btn" data-theme="<%= theme['id'] %>"><%= theme['name'] %></a>
+              <a href="#" class="btn select_btn" data-theme="<%= theme['id'] %>" title="<%= theme['name'] %>">
+                <%= theme['name'] %>
+              </a>
             </li>
           <% end %>
         <% end %>
@@ -40,8 +50,10 @@
     </div>
   </div>
     
-  <h4>Selected Filters</h4>
-  <div class="selected_list row"></div>
+  <div>
+    <h4>Selected Filters</h4>
+    <ul class="selected_list row"></ul>
+  </div>
   <div>
       <ul class="row games_list"></ul>
   </div>
@@ -49,6 +61,7 @@
 
 <script>
   $(function() {
+    var isBusy = false;
     var offset = 0;
     var platforms = '';
     var themes = '';
@@ -87,7 +100,8 @@
           $('ul.games_list').empty();
           get_results();
         });
-        var filter_btn = $('<div></div>').append(label, remove_btn).addClass('btn filter_btn col-6 col-md-4 col-lg-2');
+        var filter_btn = $('<div></div>').append(label, remove_btn).addClass('btn filter_btn')
+        var _li = $('<li></li>').append(filter_btn).addClass('col-6 col-md-4 col-lg-2');
         
         if (type === 'platform') {
           $(filter_btn).attr('data-platform', id);
@@ -97,7 +111,7 @@
           $(filter_btn).attr('data-theme', id);
         }
         
-        $('div.selected_list').append(filter_btn);
+        $('ul.selected_list').append(_li);
         
         if (typeof callback === 'function') {
           callback();
@@ -105,18 +119,20 @@
     }
     
     function get_results () {
+        $(window).unbind('scroll');
+        
         var themes_array = new Array();
         var platforms_array = new Array();
         var genres_array = new Array();
 
         // Fetch results once the buttons are built
-        $('div.selected_list div').each(function(){
-          if ($(this).attr('data-theme')) {
-            themes_array.push($(this).attr('data-theme'));
-          } else if ($(this).attr('data-platform')) {
-            platforms_array.push($(this).attr('data-platform'));
-          } else if ($(this).attr('data-genre')) {
-            genres_array.push($(this).attr('data-genre'));
+        $('ul.selected_list li').each(function(){
+          if ($('div', this).attr('data-theme')) {
+            themes_array.push($('div', this).attr('data-theme'));
+          } else if ($('div', this).attr('data-platform')) {
+            platforms_array.push($('div', this).attr('data-platform'));
+          } else if ($('div', this).attr('data-genre')) {
+            genres_array.push($('div', this).attr('data-genre'));
           }
         });
         themes = themes_array.join(',');
@@ -129,12 +145,31 @@
           genre: genres,
           offset: offset
         }
-        $.get("/browse_games", payload).success(function(data){
-            console.log(data);
-            data.forEach(function(game){
-              build_game_cards(game);
-            });
-        });
+        
+        if (!isBusy) {
+          isBusy = true;
+          $('div.loadingDiv').addClass("active");
+          $.get("/browse_games", payload).success(function(data){
+              data.forEach(function(game){
+                build_game_cards(game);
+              });
+              $('div.loadingDiv').removeClass("active");
+              isBusy = false;
+              offset += data.length;
+              // If there were 50 results, there could be more.
+              // Try to load in more when scrolling down to near the bottom
+              if (data.length === 50) {
+                $(window).on('scroll', function(){
+                    var scrollTop = $(this).scrollTop();
+                    var bodyHeight = $('body').height();
+                    var windowHeight = $(this).height();
+                    if (scrollTop >= bodyHeight - windowHeight - 100) {
+                      get_results ();
+                    }
+                });
+              }
+          });
+        }
     }
     
     function build_game_cards (game) {

@@ -106,6 +106,23 @@ div.content {
     min-height: calc(100vh - 56px - 44px);
 }
 
+div.loadingDiv {
+    position: fixed;
+    height: 99vh;
+    width: 99vw;
+    background-color: rgba(255,255,255,0.75);
+    display: none;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+div.loadingDiv.active {
+    display: block;
+}
+div.loadingDiv i {
+    margin-top: 45vh;
+}
+
 @media only screen and (min-width: 768px) {
     .desktop_only {
         display: initial;

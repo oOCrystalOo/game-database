@@ -1,21 +1,4 @@
-<div style="text-align: center;">
-    <h1>Please wait while we fetch the latest data<span class="loading_ellipsis"></span></h1>
-</div>
-
-<script>
-  function animate_ellipsis () {
-    var ellipsis_content = jQuery('span.loading_ellipsis').html();
-    if (ellipsis_content === '' || ellipsis_content === '.' || ellipsis_content === '..') {
-      jQuery('span.loading_ellipsis').html(ellipsis_content + '.');
-    } else {
-      jQuery('span.loading_ellipsis').html('');
-    }
-    setTimeout(function(){
-      animate_ellipsis();
-    }, 250);
-  }
-  animate_ellipsis();
-    
+<script>    
   jQuery(document).ready(function($){
     window.location.href = '<%= games_url %>';
   });

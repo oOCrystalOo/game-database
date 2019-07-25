@@ -9,7 +9,7 @@ class SearchBrowseController < ApplicationController
   end
   
   def get_games (term, offset)
-    request = "fields name, id, cover; search \"#{term}\"; limit 50; offset #{offset};"
+    request = "fields name, id, cover; search \"#{term}\"; limit 50; offset #{offset};"    
     games = JSON.parse(call_api("games", request))
     games.each do |game|
         if !game['cover'].nil?
@@ -17,6 +17,16 @@ class SearchBrowseController < ApplicationController
         else
           game['cover_url'] = ActionController::Base.helpers.image_path('image_placeholder.png')
         end
+    end
+    
+    if games.length > 0
+      if !games[0]['status'].nil? 
+        if games[0]['status'] == 400
+          return Array.new()
+        end
+      end
+    else 
+      return games
     end
     
     # Get more, until end is reached
