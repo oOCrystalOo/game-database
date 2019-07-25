@@ -1,24 +1,25 @@
-# README
+# Game Database
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A web application that uses the IGDB api to search for games.
+Functioning project can be viewed on (http://http://game-database-crystal-ng.herokuapp.com).
 
-Things you may want to cover:
+## Setup
+1. Clone the repository:
+``` 
+git clone https://github.com/oOCrystalOo/game-database.git
+cd game-database
+```
+	
+2. Install bundle, create a database, and run migration
+``` 
+bundle install
+rake db:create
+rake db:migrate
+```
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+3. Generate an IGDB API key.
+Go to `https://api.igdb.com`, create an account, and get an API key.
+When launching your project, create a new environmental variable called `IGDB_API_KEY` and set it as your IGDB API key.
+	
+### Notes
+This project uses postresql, was created with ruby 2.5.3 and Rails 5.2.3, and originally deployed on Heroku.
