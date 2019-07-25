@@ -97,7 +97,7 @@
               <div class="collapse row" id="screenshots">
                 <% if !@game['screenshots_urls'].nil? %>
                   <% @game['screenshots_urls'].each do |game_hash| %>
-                    <%= image_tag game_hash['url'], class: 'img-fluid  col-12 col-md-6' %>
+                    <%= link_to image_tag(game_hash['url'], class: 'img-fluid'), game_hash['url'], target: :_blank, class: 'col-12 col-md-6' %>
                   <% end %>
                 <% else %>
                   <p>No information available</p>

@@ -1,7 +1,7 @@
 # Game Database
 
 A web application that uses the IGDB api to search for games.
-Functioning project can be viewed on (http://http://game-database-crystal-ng.herokuapp.com).
+Functioning project can be viewed on (http://game-database-crystal-ng.herokuapp.com).
 
 ## Setup
 1. Clone the repository:
